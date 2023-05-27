@@ -1,5 +1,8 @@
 import 'package:advisor/PreviousAdvices.dart';
+import 'package:advisor/Providers/ThoughtProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 
 class NewAdvicePage extends StatefulWidget {
   const NewAdvicePage({super.key});
@@ -9,27 +12,24 @@ class NewAdvicePage extends StatefulWidget {
 }
 
 class _NewAdvicePageState extends State<NewAdvicePage> {
-  String newdvice = "";
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final newThoughtProvider =
+        Provider.of<ThoughtProvider>(context, listen: false);
+
     return MaterialApp(
       home: SafeArea(
         child: GestureDetector(
           onVerticalDragEnd: (DragEndDetails details) =>
-              _onVerticalDrag(details),
+              _onVerticalDrag(details, newThoughtProvider),
           child: Scaffold(
+            backgroundColor: Colors.grey.shade300,
             body: Stack(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(20, 50, 20, 0),
+                  padding: EdgeInsets.fromLTRB(30, 50, 20, 0),
                   child: Text(
-                    "Advise! ",
+                    "Advice!",
                     style: TextStyle(fontSize: 50),
                   ),
                 ),
@@ -37,15 +37,30 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                   child: Padding(
                       padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
                       child: Container(
+                        height: 400,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        margin: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                        padding: EdgeInsets.fromLTRB(0, 10, 10, 10),
-                        child: Text(
-                          "agar hum wahan aae to aapki maa hi chod denge ",
-                          style: TextStyle(fontSize: 50),
+                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        child: Center(
+                          child: Consumer<ThoughtProvider>(
+                            builder:
+                                (BuildContext context, value, Widget? child) {
+                              if (value.isloading == true) {
+                                return LoadingAnimationWidget.staggeredDotsWave(
+                                    color: Colors.grey.shade300, size: 50);
+                              } else {
+                                return Text(
+                                  value.thought.toString(),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                );
+                              }
+                            },
+                          ),
                         ),
                       )),
                 ),
@@ -57,17 +72,16 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
     );
   }
 
-  _onVerticalDrag(DragEndDetails details) {
-    if (details.primaryVelocity == 0)
-      return; // user have just tapped on screen (no dragging)
+  _onVerticalDrag(DragEndDetails details, ThoughtProvider newThoughtProvider) {
+    if (details.primaryVelocity == 0) {
+      return;
+    }
 
     if (details.primaryVelocity?.compareTo(0) == -1) {
-      print('dragged from bottom');
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PreviousAdvices()));
     } else {
-      // Now we need to update the page to get a new advice.
-      print('dragged from up');
+      newThoughtProvider.getNewThought();
     }
   }
 }
