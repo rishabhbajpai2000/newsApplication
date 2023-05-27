@@ -29,7 +29,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                 Padding(
                   padding: EdgeInsets.fromLTRB(30, 50, 20, 0),
                   child: Text(
-                    "Advice!",
+                    "Advice",
                     style: TextStyle(fontSize: 50),
                   ),
                 ),
