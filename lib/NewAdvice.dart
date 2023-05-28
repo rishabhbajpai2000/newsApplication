@@ -1,5 +1,5 @@
 import 'package:advisor/PreviousAdvices.dart';
-import 'package:advisor/Providers/ThoughtProvider.dart';
+import 'package:advisor/Providers/AdviceProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +12,16 @@ class NewAdvicePage extends StatefulWidget {
 }
 
 class _NewAdvicePageState extends State<NewAdvicePage> {
+  @override
+  void initState() {
+    super.initState();
+    final newThoughtProvider =
+        Provider.of<ThoughtProvider>(context, listen: false);
+       WidgetsBinding.instance.addPostFrameCallback((_) {
+      newThoughtProvider.getNewAdvice();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final newThoughtProvider =
@@ -48,7 +58,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                           child: Consumer<ThoughtProvider>(
                             builder:
                                 (BuildContext context, value, Widget? child) {
-                              if (value.isloading == true) {
+                              if (value.isLoading == true) {
                                 return LoadingAnimationWidget.staggeredDotsWave(
                                     color: Colors.grey.shade300, size: 50);
                               } else {
@@ -81,7 +91,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => PreviousAdvices()));
     } else {
-      newThoughtProvider.getNewThought();
+      newThoughtProvider.getNewAdvice();
     }
   }
 }

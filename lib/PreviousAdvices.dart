@@ -1,4 +1,4 @@
-import 'package:advisor/Providers/ThoughtProvider.dart';
+import 'package:advisor/Providers/AdviceProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +31,7 @@ class _PreviousAdvicesState extends State<PreviousAdvices> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () => newThoughtProvider.deleteAll(),
+                        onTap: () => newThoughtProvider.deleteAllAdvices(),
                         child: Expanded(
                             flex: 1,
                             child: Icon(
@@ -44,26 +44,29 @@ class _PreviousAdvicesState extends State<PreviousAdvices> {
                 ),
                 Consumer<ThoughtProvider>(
                     builder: (BuildContext context, value, child) {
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: value.adviceList.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                            title: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                          child: Text(
-                            value.adviceList[index],
-                            style: TextStyle(fontSize: 30),
-                          ),
-                        ));
-                      },
-                    ),
-                  );
+                  value.readAdvices();
+                    return Expanded(
+                      child: ListView.builder(
+                        itemCount: value.adviceList.length > 0
+                            ? value.adviceList.length - 1
+                            : 0,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                              title: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: Text(
+                              value.adviceList[index],
+                              style: TextStyle(fontSize: 30),
+                            ),
+                          ));
+                        },
+                      ),
+                    );
                 }),
               ],
             )));
