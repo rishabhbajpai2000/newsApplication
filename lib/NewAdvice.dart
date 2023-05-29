@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
+import 'Utils/utils.dart';
+
 class NewAdvicePage extends StatefulWidget {
-  const NewAdvicePage({super.key});
+  final bool offlineMode;
+  const NewAdvicePage({super.key, required this.offlineMode});
 
   @override
   State<NewAdvicePage> createState() => _NewAdvicePageState();
@@ -15,15 +18,21 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
   @override
   void initState() {
     super.initState();
+    final offlineMode = widget.offlineMode;
+    // getting the new advice loaded up before firing the widget.
     final newThoughtProvider =
         Provider.of<ThoughtProvider>(context, listen: false);
-       WidgetsBinding.instance.addPostFrameCallback((_) {
-      newThoughtProvider.getNewAdvice();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (offlineMode == true) {
+        newThoughtProvider.getLastOfflineAdvice();
+      } else
+        newThoughtProvider.getNewAdvice();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    final offlineMode = widget.offlineMode;
     final newThoughtProvider =
         Provider.of<ThoughtProvider>(context, listen: false);
 
@@ -31,12 +40,12 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
       home: SafeArea(
         child: GestureDetector(
           onVerticalDragEnd: (DragEndDetails details) =>
-              _onVerticalDrag(details, newThoughtProvider),
+              _onVerticalDrag(details, newThoughtProvider, offlineMode),
           child: Scaffold(
             backgroundColor: Colors.grey.shade300,
             body: Stack(
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.fromLTRB(30, 50, 20, 0),
                   child: Text(
                     "Advice",
@@ -45,16 +54,17 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                 ),
                 Center(
                   child: Padding(
-                      padding: EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+                      padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 0),
                       child: Container(
                         height: 400,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(20),
                         ),
-                        margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                         child: Center(
+                          // this will listen for any kind of changes inside the thought provider and will update accordingly.
                           child: Consumer<ThoughtProvider>(
                             builder:
                                 (BuildContext context, value, Widget? child) {
@@ -82,16 +92,23 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
     );
   }
 
-  _onVerticalDrag(DragEndDetails details, ThoughtProvider newThoughtProvider) {
+  // on vertically dragging the up from the screen the previous advices will load
+  // on dragging down the advice which you currently have will be refreshed.
+  _onVerticalDrag(DragEndDetails details, ThoughtProvider newThoughtProvider,
+      bool offlineMode) {
     if (details.primaryVelocity == 0) {
       return;
     }
-
     if (details.primaryVelocity?.compareTo(0) == -1) {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => PreviousAdvices()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const PreviousAdvices()));
     } else {
-      newThoughtProvider.getNewAdvice();
+      if (offlineMode) {
+        Utils().toastMessage(
+            "The network is not available, page will refresh once its available. ");
+      } else {
+        newThoughtProvider.getNewAdvice();
+      }
     }
   }
 }

@@ -3,16 +3,28 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ThoughtProvider with ChangeNotifier {
   // variable declaration
   List<String> _adviceList = [];
   List<String> get adviceList => _adviceList;
-  String _toDisplay =
-      ""; // we need to have it equal to previous searched thought
+  String _toDisplay = "";
   String get thought => _toDisplay;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+
+  Future<void> refreshData() async {
+    if (await _checkConnectivity()) {
+      // Perform the data refresh here
+      getNewAdvice();
+    }
+  }
+
+  Future<bool> _checkConnectivity() async {
+    final connectivityResult = await Connectivity().checkConnectivity();
+    return connectivityResult != ConnectivityResult.none;
+  }
 
   // for accessing the local data file to write in it.
   Future<String> get _localPath async {
@@ -42,7 +54,9 @@ class ThoughtProvider with ChangeNotifier {
       notifyListeners();
     } catch (e) {
       // Handle the error appropriately
-      print('Error reading advices: $e');
+      if (kDebugMode) {
+        print('Error reading advices: $e');
+      }
     }
   }
 
@@ -66,7 +80,6 @@ class ThoughtProvider with ChangeNotifier {
         await http.get(Uri.parse("https://api.adviceslip.com/advice"));
     if (response.statusCode == 200) {
       _toDisplay = jsonDecode(response.body)["slip"]["advice"].toString();
-      // _adviceList.add(_toDisplay);
       await writeAdvice(_toDisplay);
     }
     setLoading(false);
@@ -76,5 +89,26 @@ class ThoughtProvider with ChangeNotifier {
   void setLoading(bool bool) {
     _isLoading = bool;
     notifyListeners();
+  }
+
+  Future<void> getLastOfflineAdvice() async {
+    try {
+      final file = await _localFile;
+
+      if (await file.exists()) {
+        final contents = await file.readAsString();
+        _toDisplay = contents.split("\n")[0];
+      } else {
+        // File doesn't exist yet, handle this case accordingly
+
+        _toDisplay = "Do something selfless";
+      }
+      notifyListeners();
+    } catch (e) {
+      // Handle the error appropriately
+      if (kDebugMode) {
+        print('Error reading advices: $e');
+      }
+    }
   }
 }

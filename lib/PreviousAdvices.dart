@@ -20,10 +20,10 @@ class _PreviousAdvicesState extends State<PreviousAdvices> {
             body: Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.fromLTRB(30, 50, 20, 0),
+                  padding: const EdgeInsets.fromLTRB(30, 50, 20, 0),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         flex: 4,
                         child: Text(
                           "Previous Advices!",
@@ -32,7 +32,7 @@ class _PreviousAdvicesState extends State<PreviousAdvices> {
                       ),
                       GestureDetector(
                         onTap: () => newThoughtProvider.deleteAllAdvices(),
-                        child: Expanded(
+                        child: const Expanded(
                             flex: 1,
                             child: Icon(
                               Icons.delete,
@@ -42,12 +42,15 @@ class _PreviousAdvicesState extends State<PreviousAdvices> {
                     ],
                   ),
                 ),
+
+                // this will listen to any kind of changes that may come while reading the advice either a new advice is added 
+                // or from the local storage as well. 
                 Consumer<ThoughtProvider>(
                     builder: (BuildContext context, value, child) {
                   value.readAdvices();
                     return Expanded(
                       child: ListView.builder(
-                        itemCount: value.adviceList.length > 0
+                        itemCount: value.adviceList.isNotEmpty
                             ? value.adviceList.length - 1
                             : 0,
                         itemBuilder: (context, index) {
@@ -57,11 +60,11 @@ class _PreviousAdvicesState extends State<PreviousAdvices> {
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(10),
                             ),
-                            margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                            padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
                             child: Text(
                               value.adviceList[index],
-                              style: TextStyle(fontSize: 30),
+                              style: const TextStyle(fontSize: 30),
                             ),
                           ));
                         },
