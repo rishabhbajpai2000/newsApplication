@@ -62,14 +62,14 @@ class _SplashScreenState extends State<SplashScreen> {
       Timer(
           const Duration(seconds: 2),
           () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const NewAdvicePage(offlineMode: false,))));
+              MaterialPageRoute(builder: (context) =>  NewAdvicePage(offlineMode: false,))));
     } else {
       Timer(
           const Duration(seconds: 2),
           () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const NewAdvicePage(offlineMode: true))));
+                  builder: (context) =>  NewAdvicePage(offlineMode: true))));
     }
   }
 

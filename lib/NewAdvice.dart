@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:advisor/PreviousAdvices.dart';
 import 'package:advisor/Providers/AdviceProvider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
@@ -7,27 +10,56 @@ import 'package:provider/provider.dart';
 import 'Utils/utils.dart';
 
 class NewAdvicePage extends StatefulWidget {
-  final bool offlineMode;
-  const NewAdvicePage({super.key, required this.offlineMode});
+  bool offlineMode;
+  NewAdvicePage({super.key, required this.offlineMode});
 
   @override
   State<NewAdvicePage> createState() => _NewAdvicePageState();
 }
 
 class _NewAdvicePageState extends State<NewAdvicePage> {
+  final Connectivity _connectivity = Connectivity();
+  late StreamSubscription<ConnectivityResult> _connectivitySubscription;
+
   @override
   void initState() {
     super.initState();
-    final offlineMode = widget.offlineMode;
-    // getting the new advice loaded up before firing the widget.
+    var offlineMode = widget.offlineMode;
     final newThoughtProvider =
         Provider.of<ThoughtProvider>(context, listen: false);
+    // Listen for network connectivity changes
+    _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
+      (ConnectivityResult result) {
+        if (result != ConnectivityResult.none) {
+          Utils().toastMessage("Found the internet, new advice coming soon!");
+          newThoughtProvider.refreshData();
+          setState(() {
+          widget.offlineMode = false;
+          });
+        }
+        else if (result == ConnectivityResult.none) {
+          setState(() {
+          widget.offlineMode = true;
+          });
+        }
+      },
+    );
+    
+    // getting the new advice loaded up before firing the widget.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (offlineMode == true) {
         newThoughtProvider.getLastOfflineAdvice();
-      } else
+      } else {
         newThoughtProvider.getNewAdvice();
+      }
     });
+  }
+
+  @override
+  void dispose() {
+    // Cancel the connectivity subscription when the widget is disposed
+    _connectivitySubscription.cancel();
+    super.dispose();
   }
 
   @override

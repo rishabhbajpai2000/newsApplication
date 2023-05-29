@@ -97,7 +97,8 @@ class ThoughtProvider with ChangeNotifier {
 
       if (await file.exists()) {
         final contents = await file.readAsString();
-        _toDisplay = contents.split("\n")[0];
+        var advices = contents.split("\n");
+        _toDisplay = advices[0];
       } else {
         // File doesn't exist yet, handle this case accordingly
 
