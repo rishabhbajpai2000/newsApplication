@@ -28,9 +28,12 @@ The following dependencies are used in the project:
 4. Swipe up to view previous advices or swipe down to refresh the current advice.
 5. Tap the delete icon in the previous advices screen to delete all advices.
 ## Screenshots
-Splash Screen
-New Advice Page
-Previous Advices Page
+### Splash Screen
+![SplashScreen](https://github.com/rishabhbajpai2000/Advisor/assets/64163517/c154fa1c-11ba-4b68-8dc4-2dde6d956b22)
+### New Advice Page
+![Newadvice](https://github.com/rishabhbajpai2000/Advisor/assets/64163517/b0e69ce4-beb6-42e8-83ea-fc25f931e6a4)
+### Previous Advices Page
+![PreviousAdvices](https://github.com/rishabhbajpai2000/Advisor/assets/64163517/a29c9ef5-9e44-48d9-93ac-15c006498647)
 
 ## Demo Video [Youtube](https://www.youtube.com/watch?v=Jp4krB0mzD4)
 
