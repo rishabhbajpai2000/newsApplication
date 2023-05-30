@@ -34,17 +34,16 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
           Utils().toastMessage("Found the internet, new advice coming soon!");
           newThoughtProvider.refreshData();
           setState(() {
-          widget.offlineMode = false;
+            widget.offlineMode = false;
           });
-        }
-        else if (result == ConnectivityResult.none) {
+        } else if (result == ConnectivityResult.none) {
           setState(() {
-          widget.offlineMode = true;
+            widget.offlineMode = true;
           });
         }
       },
     );
-    
+
     // getting the new advice loaded up before firing the widget.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (offlineMode == true) {
@@ -75,48 +74,110 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
               _onVerticalDrag(details, newThoughtProvider, offlineMode),
           child: Scaffold(
             backgroundColor: Colors.grey.shade300,
-            body: Stack(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.fromLTRB(30, 50, 20, 0),
-                  child: Text(
-                    "Advice",
-                    style: TextStyle(fontSize: 50),
-                  ),
+            body: Container(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("assets/BackgroundNoLogo.png"),
+                  fit: BoxFit.cover,
                 ),
-                Center(
-                  child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 0),
-                      child: Container(
-                        height: 400,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
-                        child: Center(
-                          // this will listen for any kind of changes inside the thought provider and will update accordingly.
-                          child: Consumer<ThoughtProvider>(
-                            builder:
-                                (BuildContext context, value, Widget? child) {
-                              if (value.isLoading == true) {
-                                return LoadingAnimationWidget.staggeredDotsWave(
-                                    color: Colors.grey.shade300, size: 50);
-                              } else {
-                                return Text(
-                                  value.thought.toString(),
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineMedium,
-                                );
-                              }
-                            },
+              ),
+              child: Stack(
+                children: [
+                  Center(
+                    child: Padding(
+                        padding: const EdgeInsets.fromLTRB(20.0, 0, 20, 0),
+                        child: Stack(children: [
+                          Container(
+                            height: 400,
+                            decoration: BoxDecoration(
+                                color: Color.fromARGB(255, 14, 64, 99),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                    color: Colors.yellow, width: 10)),
+                            margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                            child: Center(
+                              // this will listen for any kind of changes inside the thought provider and will update accordingly.
+                              child: Consumer<ThoughtProvider>(
+                                builder: (BuildContext context, value,
+                                    Widget? child) {
+                                  if (value.isLoading == true) {
+                                    return LoadingAnimationWidget
+                                        .staggeredDotsWave(
+                                            color: Colors.grey.shade300,
+                                            size: 50);
+                                  } else {
+                                    return Text(
+                                      value.thought.toString(),
+                                      style: TextStyle(
+                                          color: Colors.grey.shade300,
+                                          fontSize: 30),
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
                           ),
-                        ),
-                      )),
-                ),
-              ],
+                          Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: Container(
+                                width: 70,
+                                height: 70,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.yellow),
+                              )),
+                          Positioned(
+                              top: 0,
+                              left: 100,
+                              right: 100,
+                              child: Container(
+                                width: MediaQuery.of(context).size.width * 0.5,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                    color: Colors.yellow,
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Center(
+                                    child: Text(
+                                  "Advice",
+                                  style: TextStyle(fontSize: 30),
+                                )),
+                              ))
+                        ])),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child:
+                            Column(mainAxisSize: MainAxisSize.min, children: [
+                          Opacity(
+                            opacity: 0.7,
+                            child: Icon(
+                              Icons.keyboard_arrow_up,
+                              size: 36,
+                              color: Colors.white,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Opacity(
+                            opacity: 0.7,
+                            child: Text(
+                              "Slide up to view previous Advices",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 14),
+                            ),
+                          )
+                        ]),
+                      ),
+                    ),
+                  )
+                ],
+              ),
             ),
           ),
         ),
