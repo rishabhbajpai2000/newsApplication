@@ -1,16 +1,11 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:advisor/model/contants.dart';
 import 'package:advisor/view/FullPageNews.dart';
 import 'package:advisor/view/BookMarkedNews.dart';
 import 'package:advisor/Providers/NewsProvider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 
 import '../Utils/utils.dart';
@@ -24,6 +19,7 @@ class NewAdvicePage extends StatefulWidget {
 }
 
 class _NewAdvicePageState extends State<NewAdvicePage> {
+
   final Connectivity _connectivity = Connectivity();
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
   PageController _pageController = PageController();
@@ -32,15 +28,13 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
   void initState() {
     super.initState();
     var offlineMode = widget.offlineMode;
-
     // making a provider.
     final newThoughtProvider =
         Provider.of<ThoughtProvider>(context, listen: false);
-
     // this will listen when the user swipes right, a new advice will be loaded into the app.
     _pageController.addListener(() {
       if (_pageController.page == _pageController.page!.roundToDouble()) {
-        print("the user swiped right! ");
+        // print("the user swiped right! ");
         newThoughtProvider.getNewNews();
       }
     });
@@ -49,7 +43,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
     _connectivitySubscription = _connectivity.onConnectivityChanged.listen(
       (ConnectivityResult result) {
         if (result != ConnectivityResult.none) {
-          Utils().toastMessage("Found the internet, new advice coming soon!");
+          Utils().toastMessage("Found the internet, new news coming soon!");
           newThoughtProvider.refreshData();
           newThoughtProvider.getNewNews();
           setState(() {
@@ -356,8 +350,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
     );
   }
 
-  // on vertically dragging the up from the screen the previous advices will load
-  // on dragging down the advice which you currently have will be refreshed.
+  // on vertically dragging the up from the screen the bookmarked news will be loaded
   _onVerticalDrag(DragEndDetails details, ThoughtProvider newThoughtProvider,
       bool offlineMode) {
     if (details.primaryVelocity == 0) {

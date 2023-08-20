@@ -57,7 +57,7 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                       GestureDetector(
                         onTap: () async{
                           await newThoughtProvider.deleteAllAdvices();
-                          print("all news deleted");
+                          // print("all news deleted");
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),

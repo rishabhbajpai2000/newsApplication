@@ -8,7 +8,7 @@ void main() {
     // specifying the providers for the application.
     MultiProvider(
       providers: [
-        // Provider for ThoughtProvider
+        // Provider for newsprovider
         ChangeNotifierProvider(create: (_) => ThoughtProvider()),
       ],
       child: const MyApp(),

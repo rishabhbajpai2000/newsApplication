@@ -81,13 +81,13 @@ class _SplashScreenState extends State<SplashScreen> {
       final connectivityResult = await (Connectivity().checkConnectivity());
       if (connectivityResult == ConnectivityResult.none) {
         Utils().toastMessage(
-            "The network is not available, last fetched advice will be shown.");
+            "The network is not available, last fetched news will be shown.");
         return false;
       }
       return true;
     } on Exception {
       Utils().toastMessage(
-          "The network is not available, last fetched advice will be shown. ");
+          "The network is not available, last fetched news will be shown. ");
       return false;
     }
   }

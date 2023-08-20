@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
@@ -64,8 +63,8 @@ class ThoughtProvider with ChangeNotifier {
             .where((line) => line.isNotEmpty)
             .map((line) {
           final newsArticleJson = jsonDecode(line);
-          print("this is the news article json");
-          print(newsArticleJson);
+          // print("this is the news article json");
+          // print(newsArticleJson);
           return NewsArticle.fromJSON(newsArticleJson);
         }).toList();
 
@@ -90,31 +89,21 @@ class ThoughtProvider with ChangeNotifier {
 
 
   Future<File> writeNews(NewsArticle newsArticle) async {
-    print("The image url pssed to write news function is ");
-    print(newsArticle.urlToImage);
-    // print(newsArticle.newsHeading);
-    // print(newsArticle.newsDescription);
-    // print(newsArticle.newsContent);
+
     final file = await _localFile;
-    // print("now we have got the local file ");
     // Write the file
     final newsArticleJson = newsArticle.toJson();
-    // print("the news article is now converted to json");
 
     // Convert the JSON to a string
     final newsArticleJsonString = jsonEncode(newsArticleJson);
-    // print("the news article json is now converted to string");
 
-    // print("the string is now going to be added in to the file. ");
     // Write the JSON data to the file
-    // print(newsArticleJsonString);
     return file.writeAsString("$newsArticleJsonString this will be end statement ", mode: FileMode.append);
 
   }
 
 
   void getNewNews() async {
-    print("get new advice called");
     setLoading(true);
     notifyListeners();
     final _random = new Random();
@@ -127,7 +116,7 @@ class ThoughtProvider with ChangeNotifier {
       var myArticle = articles[_random.nextInt(articles.length)];
       // print(myArticle);
       news.add(NewsArticle.fromJSON(myArticle));
-      print("new advice was loaded in ");
+      // print("new advice was loaded in ");
     }
     else{
       print(response.statusCode);
@@ -158,7 +147,6 @@ class ThoughtProvider with ChangeNotifier {
         _toDisplay = advices[0];
       } else {
         // File doesn't exist yet, handle this case accordingly
-
         _toDisplay = "Do something selfless";
       }
       notifyListeners();
