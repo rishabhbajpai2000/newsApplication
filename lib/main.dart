@@ -1,10 +1,11 @@
-import 'package:advisor/Providers/AdviceProvider.dart';
-import 'package:advisor/SplashScreen.dart';
+import 'package:advisor/Providers/NewsProvider.dart';
+import 'package:advisor/view/SplashScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 void main() {
   runApp(
+    // specifying the providers for the application.
     MultiProvider(
       providers: [
         // Provider for ThoughtProvider
@@ -25,3 +26,5 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
