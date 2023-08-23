@@ -1,4 +1,8 @@
 # News Application using Provider statemanagement
+The FlashNews application is a user-friendly news platform that utilizes Provider state management. It presents various news categories, allows users to browse news items, read summaries, access full articles, and bookmark news for later reading. Powered by API integration and local storage, the app offers a seamless news consumption experience.
+
+# Screenshot
+![IMG_20230823_182206](https://github.com/rishabhbajpai2000/newsApplication/assets/64163517/fb197331-7acd-46fe-b67d-81a217c7cdb6)
 
 # App Overview
 ## Screen 1 - Splash Screen
