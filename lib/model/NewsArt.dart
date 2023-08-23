@@ -6,6 +6,7 @@ class NewsArticle {
   String url;
   String author;
   bool isBookmarked = false;
+
   NewsArticle(
       {required this.urlToImage,
         required this.content,

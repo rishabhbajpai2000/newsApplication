@@ -11,7 +11,8 @@ import 'package:provider/provider.dart';
 import '../Utils/utils.dart';
 
 class NewAdvicePage extends StatefulWidget {
-  bool offlineMode;
+
+  bool offlineMode; // this variable will be used to check if the app is in offline mode or not.
   NewAdvicePage({super.key, required this.offlineMode});
 
   @override
@@ -20,9 +21,9 @@ class NewAdvicePage extends StatefulWidget {
 
 class _NewAdvicePageState extends State<NewAdvicePage> {
 
-  final Connectivity _connectivity = Connectivity();
+  final Connectivity _connectivity = Connectivity(); // this will be used to check the network connectivity.
   late StreamSubscription<ConnectivityResult> _connectivitySubscription;
-  PageController _pageController = PageController();
+  PageController _pageController = PageController(); // when the user swipes right, this controller will insure to load a new advice
 
   @override
   void initState() {
@@ -108,10 +109,10 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                             color: Colors.grey[200],
                             borderRadius: BorderRadius.circular(20.0),
                           ),
-                          padding: EdgeInsets.symmetric(horizontal: 10.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
                           child: Row(
                             children: [
-                              Expanded(
+                              const Expanded(
                                 child: TextField(
                                   decoration: InputDecoration(
                                     hintText: " Search...",
@@ -120,7 +121,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                 ),
                               ),
                               IconButton(
-                                icon: Icon(Icons.search),
+                                icon: const Icon(Icons.search),
                                 onPressed: () {
                                   // Implement your search logic here
                                 },
@@ -136,7 +137,6 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                   newThoughtProvider.category = "technology";
                                   newThoughtProvider.refreshData();
                                   setState(() {});
-                                  print("Technology");
                                 },
                                 child: Text("Technology",
                                     style: newThoughtProvider.category ==
@@ -148,7 +148,6 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                   newThoughtProvider.category = "health";
                                   newThoughtProvider.refreshData();
                                   setState(() {});
-                                  print("Health");
                                 },
                                 child: Text("Health",
                                     style: newThoughtProvider.category == "health"
@@ -159,7 +158,6 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                   newThoughtProvider.category = "business";
                                   newThoughtProvider.refreshData();
                                   setState(() {});
-                                  print("business");
                                 },
                                 child: Text("Business",
                                     style:
@@ -198,9 +196,6 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                   color: Colors.grey[200],
                                   borderRadius: BorderRadius.circular(20.0),
                                 ),
-                                // height: MediaQuery.of(context).size.height * 0.7,
-
-                                // child: Center(child: Text("some random text")),
                                 child: Padding(
                                   padding: const EdgeInsets.all(15.0),
                                   child: Column(
@@ -213,7 +208,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       FullPageNews(
-                                                          newsart: value
+                                                          newsArticle: value
                                                               .news[index])));
                                         },
                                         child: ClipRRect(
@@ -230,27 +225,27 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Text(
                                         value.news[index].title.length > 90
                                             ? "${value.news[index].title.substring(0, 90)}..."
                                             : value.news[index].title,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20,
                                       ),
                                       Text(
                                         textAlign: TextAlign.start,
                                         value.news[index].author,
                                         style:
-                                            TextStyle(color: Color(0xff464646)),
+                                            const TextStyle(color: Color(0xff464646)),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Text(
@@ -258,18 +253,17 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                             ? "${value.news[index].content.substring(0, 250)}..."
                                             : "${value.news[index].content.toString().substring(0, value.news[index].content.length - 15)}...",
                                         style:
-                                            TextStyle(color: Color(0xff7a7a7a)),
+                                            const TextStyle(color: Color(0xff7a7a7a)),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       Row(
                                         children: [
                                           GestureDetector(
                                             onTap: (){
-                                              print("Bookmarked News");
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                      builder: (context) => FullPageNews(newsart: value.news[index])));
+                                                      builder: (context) => FullPageNews(newsArticle: value.news[index])));
                                             },
                                             child: Container(
                                                 decoration: BoxDecoration(
@@ -282,17 +276,16 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                                   borderRadius:
                                                       BorderRadius.circular(10.0),
                                                 ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(8.0),
                                                   child: Text("Read more"),
                                                 )),
                                           ),
-                                          Spacer(),
+                                          const Spacer(),
                                           GestureDetector(
                                             onTap: () async {
                                               await newThoughtProvider.writeNews(value.news[index]);
                                               value.news[index].isBookmarked = true;
-                                              print("Bookmark ${value.news[index].isBookmarked}");
                                               setState(() {});
                                             },
                                             child: Container(
@@ -307,7 +300,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                                                 ),
                                                 child: Padding(
                                                   padding: const EdgeInsets.all(8.0),
-                                                  child: value.news[index].isBookmarked == true?Text("Bookmarked"):Text("Add Bookmark")
+                                                  child: value.news[index].isBookmarked == true?const Text("Bookmarked"):const Text("Add Bookmark")
                                                 )),
                                           ),
                                         ],
@@ -319,7 +312,7 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                             );
                           } else {
                             // Handle the case when there are no news articles
-                            return Center(
+                            return const Center(
                               child: Text("No news articles available."),
                             );
                           }
@@ -329,17 +322,15 @@ class _NewAdvicePageState extends State<NewAdvicePage> {
                   ),
                   Expanded(
                     flex: 1,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.keyboard_arrow_up),
-                              onPressed: () {
-                              },
-                            ),
-                            Text("Swipe up for Bookmarked News"),
-                          ],
-                        ),
+                      child: Column(
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.keyboard_arrow_up),
+                            onPressed: () {
+                            },
+                          ),
+                          const Text("Swipe up for Bookmarked News"),
+                        ],
                       ))
                 ],
               ),

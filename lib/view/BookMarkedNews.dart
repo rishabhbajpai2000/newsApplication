@@ -46,21 +46,21 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Icon(Icons.arrow_back, color: Colors.white,),
                         ),
                       ),
                       Expanded(child: Container()),
-                      Text("Bookmarked News", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline),),
+                      const Text("Bookmarked News", style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold, color: Colors.white, decoration: TextDecoration.underline),),
                       Expanded(child: Container()),
                       GestureDetector(
                         onTap: () async{
-                          await newThoughtProvider.deleteAllAdvices();
+                          await newThoughtProvider.deleteAllBookmarkedNews();
                           // print("all news deleted");
                         },
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
+                        child: const Padding(
+                          padding: EdgeInsets.all(10.0),
                           child: Icon(Icons.delete, color: Colors.white,),
                         ),
                       ),
@@ -106,7 +106,7 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                                               MaterialPageRoute(
                                                   builder: (context) =>
                                                       FullPageNews(
-                                                          newsart: value
+                                                          newsArticle: value
                                                               .bookmarkedNews[index])));
                                         },
                                         child: ClipRRect(
@@ -123,27 +123,27 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Text(
                                         value.bookmarkedNews[index].title.length > 90
                                             ? "${value.bookmarkedNews[index].title.substring(0, 90)}..."
                                             : value.bookmarkedNews[index].title,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 20,
                                       ),
                                       Text(
                                         textAlign: TextAlign.start,
                                         value.bookmarkedNews[index].author,
                                         style:
-                                        TextStyle(color: Color(0xff464646)),
+                                        const TextStyle(color: Color(0xff464646)),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         height: 10,
                                       ),
                                       Text(
@@ -151,9 +151,9 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                                             ? "${value.bookmarkedNews[index].content.substring(0, 250)}..."
                                             : "${value.bookmarkedNews[index].content.toString().substring(0, value.bookmarkedNews[index].content.length - 15)}...",
                                         style:
-                                        TextStyle(color: Color(0xff7a7a7a)),
+                                        const TextStyle(color: Color(0xff7a7a7a)),
                                       ),
-                                      Spacer(),
+                                      const Spacer(),
                                       Row(
                                         children: [
                                           GestureDetector(
@@ -162,7 +162,7 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                                                   MaterialPageRoute(
                                                       builder: (context) =>
                                                           FullPageNews(
-                                                              newsart: value
+                                                              newsArticle: value
                                                                   .bookmarkedNews[index])));
                                             },
 
@@ -177,12 +177,12 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                                                   borderRadius:
                                                   BorderRadius.circular(10.0),
                                                 ),
-                                                child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                child: const Padding(
+                                                  padding: EdgeInsets.all(8.0),
                                                   child: Text("Read more"),
                                                 )),
                                           ),
-                                          Spacer(),
+                                          const Spacer(),
 
                                         ],
                                       )
@@ -193,7 +193,7 @@ class _BookmarkedNewsState extends State<BookmarkedNews> {
                             );
                           } else {
                             // Handle the case when there are no news articles
-                            return Center(
+                            return const Center(
                               child: Text("No news articles available."),
                             );
                           }

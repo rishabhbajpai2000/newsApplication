@@ -4,14 +4,15 @@ import 'package:webview_flutter/webview_flutter.dart';
 import '../model/NewsArt.dart';
 
 class FullPageNews extends StatefulWidget {
-  NewsArticle newsart;
-  FullPageNews({super.key, required this.newsart});
+  NewsArticle newsArticle;
+  FullPageNews({super.key, required this.newsArticle});
 
   @override
   State<FullPageNews> createState() => _FullPageNewsState();
 }
 
 class _FullPageNewsState extends State<FullPageNews> {
+  // calling the webview controller, to open the website
   var controller = WebViewController()
     ..setJavaScriptMode(JavaScriptMode.unrestricted)
     ..setBackgroundColor(const Color(0x00000000))
@@ -33,14 +34,14 @@ class _FullPageNewsState extends State<FullPageNews> {
     );
   @override
   Widget build(BuildContext context) {
-    var newsart = widget.newsart;
+    var newsArticle = widget.newsArticle;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xff1c1e33),
-          title: Text("Full News "),),
+          backgroundColor: const Color(0xff1c1e33),
+          title: const Text("Full News "),),
           body: Center(
-        child: WebViewWidget(controller: controller..loadRequest(Uri.parse(newsart.url)),),
+        child: WebViewWidget(controller: controller..loadRequest(Uri.parse(newsArticle.url)),),
       )
           //
           ),

@@ -10,8 +10,9 @@ import '../model/NewsArt.dart';
 import '../model/contants.dart';
 
 class ThoughtProvider with ChangeNotifier {
+
   // variable declaration
-  List<String> _adviceList = [];
+  final List<String> _adviceList = [];
   List<String> get adviceList => _adviceList;
   String _toDisplay = "";
   String get thought => _toDisplay;
@@ -43,12 +44,13 @@ class ThoughtProvider with ChangeNotifier {
     return directory.path;
   }
 
+  // for accessing the local data file to write in it.
   Future<File> get _localFile async {
     final path = await _localPath;
     return File('$path/Bookmarks.json');
   }
 
-
+  // this function will read the data from the local file and store it in the bookmarked news list.
   Future<void> readNews() async {
     try {
       final file = await _localFile;
@@ -88,6 +90,7 @@ class ThoughtProvider with ChangeNotifier {
   }
 
 
+  // this function will write the data in the local file Bookmarks.json.
   Future<File> writeNews(NewsArticle newsArticle) async {
 
     final file = await _localFile;
@@ -103,6 +106,8 @@ class ThoughtProvider with ChangeNotifier {
   }
 
 
+  // this function will get the news from news api
+  // and store it in the news list.
   void getNewNews() async {
     setLoading(true);
     notifyListeners();
@@ -130,10 +135,12 @@ class ThoughtProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<File> deleteAllAdvices() async {
+  // this will delete all the advices from the local file.
+  // and will also clear the Bookmarked advices list.
+  Future<File> deleteAllBookmarkedNews() async {
     final file = await _localFile;
     // Write the file
-    _toDisplay = "";
+    bookmarkedNews.clear();
     return file.writeAsString("");
   }
 

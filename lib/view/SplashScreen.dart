@@ -29,25 +29,25 @@ class _SplashScreenState extends State<SplashScreen> {
         body: Container(
           width: MediaQuery.of(context)
               .size
-              .width, // this will take the width of the screen
+              .width,
           decoration: const BoxDecoration(
             color: Color(0xff01c1e33),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("FLASH", style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.bold),),
-              SizedBox(height: 15,),
+              const Text("FLASH", style: TextStyle(fontSize: 50, color: Colors.white, fontWeight: FontWeight.bold),),
+              const SizedBox(height: 15,),
               Container(
                   color: Colors.red,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Text("N E W S",style: TextStyle(fontSize: 60, color: Colors.white, fontWeight: FontWeight.bold),),
                   )),
-              SizedBox(height: 20,),
-              Text("All type of news from all trusted sources",style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),),
-              SizedBox(height: 10,),
-              Text("for all the types of people",style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),),
+              const SizedBox(height: 20,),
+              const Text("All type of news from all trusted sources",style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),),
+              const SizedBox(height: 10,),
+              const Text("for all the types of people",style: TextStyle(fontSize: 15, color: Colors.white, fontWeight: FontWeight.bold),),
             ],
           ),
         ),
@@ -55,6 +55,8 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
+  // this function will decide either to send to new advice page
+  // or previous advice page depending on the network availability.
   Future<void> pageDecide() async {
     // make network call and decide which page to load.
     if (await checkNetworkStatus()) {
@@ -76,6 +78,8 @@ class _SplashScreenState extends State<SplashScreen> {
     }
   }
 
+  // this function will check the network status and return true if network is available
+  // else return false.
   Future<bool> checkNetworkStatus() async {
     try {
       final connectivityResult = await (Connectivity().checkConnectivity());

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class Utils {
+  // this function will give a toast message when called.
   void toastMessage(String message) {
     Fluttertoast.showToast(
         msg: message,
